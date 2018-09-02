@@ -1,3 +1,5 @@
+package scalaz.viz.vegalite.grammar
+
 import scalaz.viz.schema._
 import shapeless._
 
