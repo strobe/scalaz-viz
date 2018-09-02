@@ -8,11 +8,13 @@ case object FitY extends AutoSizeType
 case object None extends AutoSizeType
 
 trait Contains
-case object Content extends Contains
-case object padding extends Contains
+object Contains {
+  case object Content extends Contains
+  case object Padding extends Contains  
+}
 
 case class AutoSize(
   autoSizeType: AutoSizeType,
   resize: Boolean = false,
-  contains: Contains = Content
+  contains: Contains = Contains.Content
 )
