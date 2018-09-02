@@ -55,6 +55,9 @@ object Scalaz {
     scalaVersion in ThisBuild := crossScalaVersions.value.head,
     scalacOptions := stdOptions ++ extraOptions(scalaVersion.value),
     libraryDependencies ++= compileOnlyDeps ++ testDeps ++ Seq(
+      "org.scalaz" %% "scalaz-effect" % "7.2.26",
+      "io.argonaut" %% "argonaut" % "6.2.2",
+      "com.chuusai" %% "shapeless" % "2.3.3",
       compilerPlugin("org.spire-math"         %% "kind-projector"  % "0.9.7"),
       compilerPlugin("com.github.tomasmikula" %% "pascal"          % "0.2.1"),
       compilerPlugin("com.github.ghik"        %% "silencer-plugin" % "1.0")

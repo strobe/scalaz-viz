@@ -75,7 +75,7 @@ package scalaz.viz.grammar
 case class Mark(
   markType: MarkType,
   clip: Clip = NoClip,
-  description: Option[String] = None,
+  description: Option[String] = Option.empty,
   encode: Encode,
   from: Option[From],
   interactive: Boolean = true,
@@ -84,7 +84,7 @@ case class Mark(
   on: Seq[Trigger] = Seq.empty,
   sort: Compare,
   transform: Seq[Transform] = Seq.empty,
-  role: Option[String] = None,
+  role: Option[String] = Option.empty,
   style: Seq[String] = Seq.empty,
   zindex: Int = 0
 )
