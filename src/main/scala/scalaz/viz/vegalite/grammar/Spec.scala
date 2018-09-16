@@ -64,6 +64,7 @@ object Spec {
   }
   
   case class GenericUnitSpec(
+    schema: String,
     config: Option[Config],
     data: Option[UrlData Either InlineData],
     description: Option[String],
@@ -79,6 +80,7 @@ object Spec {
 
   object GenericUnitSpec {
     def schema: Dsl[GenericUnitSpec] = allOf(
+      s"$$schema" -> str::
       opt("config" -> Config.schema) ::
       opt("data" -> oneOf(UrlData.schema :: InlineData.schema :: HNil).toEither) ::
       opt("description" -> str) ::
