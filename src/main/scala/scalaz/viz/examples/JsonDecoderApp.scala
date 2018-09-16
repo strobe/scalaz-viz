@@ -1,17 +1,9 @@
 package scalaz.viz.examples
 
+import argonaut.Argonaut._
 import argonaut._
-import Argonaut._
-import scalaz.viz.schema._
-import scalaz.viz.schema.Algebra._
-import scalaz.viz.schema.GenDsl
 import scalaz.viz.interpreter.JsonDecoder
-import shapeless._
-import shapeless.poly._
 
-/**
- * Created by Evgeniy Tokarev on 2018-09-13.
- */
 object JsonDecoderApp {
 
   def main(args: Array[String]): Unit = {
@@ -33,10 +25,10 @@ object JsonDecoderApp {
      }
    }""".parseOption.get // TODO obviously naughty
 
-    import scalaz.viz.vegalite.grammar.Spec
     import ArgonautScalaz._
     import scalaz._
     import Scalaz._
+    import scalaz.viz.vegalite.grammar.Spec
     val result = JsonDecoder.getDecoder(Spec.schema).decodeJson(visJson)
     result.result match {
       case Left((errorMessage, history)) =>
