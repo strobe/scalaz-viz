@@ -59,6 +59,10 @@ object Scalaz {
       "io.argonaut" %% "argonaut" % "6.2.2",
       "io.argonaut" %% "argonaut-scalaz" % "6.2.2",
       "com.chuusai" %% "shapeless" % "2.3.3",
+      "org.scalaz" %% "testz-core" % "0.0.5",
+      "org.scalaz" %% "testz-stdlib" % "0.0.5",
+      "org.scalaz" %% "testz-runner" % "0.0.5",
+      "org.scalaz" %% "testz-scalaz" % "0.0.5",
       compilerPlugin("org.spire-math"         %% "kind-projector"  % "0.9.7"),
       compilerPlugin("com.github.tomasmikula" %% "pascal"          % "0.2.1"),
       compilerPlugin("com.github.ghik"        %% "silencer-plugin" % "1.0")
