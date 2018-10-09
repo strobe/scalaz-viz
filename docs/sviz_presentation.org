@@ -1,0 +1,243 @@
+#+CATEGORY: scalaz
+
+#+HTML_HEAD_EXTRA: <style></style>
+#+PANDOC_OPTIONS: standalone:t latex-engine:xelatex
+#+PANDOC_OPTIONS: "variable:mainfont=Helvetica Neue"
+#+OPTIONS: num:nil
+# right PDF export command
+# pandoc --latex-engine=xelatex --variable mainfont="Helvetica Neue" --variable geometry="margin=0.5in" --variable urlcolor=blue --toc sviz_presentation.org -f org -s -o sviz_presentation.pdf
+
+#+TITLE: Scalaz-Viz Pitch
+#+EPRESENT_FRAME_LEVEL: 1
+
+* Ambitious goal
+
+Scalaz-Viz a is Visualization library that:
+  - a high-performance
+  - purely-functional
+  - strongly-typed
+  - stream-friendly
+  - composable
+  - targets a variety of different rendering backends.
+
+* Ambitious features
+
+  - High-performance rendering that can handle hundreds of thousands of points and visual features.
+  - Strongly-typed, purely-functional, composable API that is inspired by the best visualization libraries and research.
+  - Targets different rendering backends through finally tagless API (t Scala.js, the JVM, the file system)
+  - Convenient integration with many popular libraries, including:
+    - Scalaz (Analytics, ML, Metrics, etc.)
+    - Big Data Platforms (Spark, Flink, Kafka, etc.)
+    - Data Science Notebooks (Jupyter, Zeppelin, etc.)
+  - Supports streaming/time-varying data and event streams such as user interactions.
+  - TODO ...
+
+* Niche
+
+Scalaz Viz also fills an important niche in the Scala ecosystem, as currently there are not many well-developed visualization libraries for the JVM.
+
+Currently, the visualization landscape in Scala is a bit unremarkable:
+  + A handful of Java wrappers that offer little more than very basic OO/imperative scala APIs
+  + A tonne of minimal or abandoned projects
+  + Wrappers for JavaScript libs such as D3 in the Scala.js world (which is a fairly small subset of visualization    requirements - especially when we consider data science)
+
+* Visualization libraries at Scala.
+
+| Library   | multiple | typesafe | clear API            | streams | stack     | interactivity | docs              |
+|           | backends |          |                      |         | overflows |               |                   |
+|-----------+----------+----------+----------------------+---------+-----------+---------------+-------------------|
+| Doodle    | yes      | yes      | no (Free monads)     | no      | no        | no            | partial (at book) |
+| Nspl      | yes      | partial? | no (Factory methods) | yes     | ?         | partial       | no                |
+| EvilPlot  | partial  | partial  | yes                  | no?     | ?         | no            | yes               |
+| Vegas     | no       | partial  | no                   | no      | ?         | partial       | partial           |
+| Plot.ly   |          |          |                      |         |           |               |                   |
+| Wisp      |          |          |                      |         |           |               |                   |
+| BreezeViz | no       |          |                      |         |           |               |                   |
+| Smile     |          |          |                      |         |           |               |                   |
+
+* Visualization libraries at others languages.
+
+ | Language   | Library                   |   |   |   |
+ |------------+---------------------------+---+---+---|
+ | R          | ggplot2                   |   |   |   |
+ | R          | Lattice                   |   |   |   |
+ | JavaScript | D3                        |   |   |   |
+ | JavaScript | Vega                      |   |   |   |
+ | JavaScript | Vega-Lite                 |   |   |   |
+ | JavaScript | Plotly                    |   |   |   |
+ | Java       | JChart                    |   |   |   |
+ | Java       | JFreeChart                |   |   |   |
+ | Java       | charts4j                  |   |   |   |
+ | Java       | GRAL                      |   |   |   |
+ | Python     | matplotlib                |   |   |   |
+ | Python     | pandas                    |   |   |   |
+ | Python     | ggplot                    |   |   |   |
+ | MATLAB     | MATLAB's plotting library |   |   |   |
+
+* Main Challenges.
+
+- Type-safe and clear API - seems like state of the art visualizations APIs currently not type-safe at all.
+- Declarative API - most of viz APIs not Declarative.
+- Multiple backends - targets at least include Image, Scala.js (possible notebooks, OpenGL...).
+- Interactivity - we need declarative way to describe basic interactivity capabilities.
+- Stream nature
+- Ability to handle data sets larger that memory
+- Performance
+
+* But for now, let's try.
+
+- use exist rendering backend
+- define declarative and type-safe API
+- (Optionally) API for interactivity
+
+* Sources of inspiration
+
+Fundamental theoretic work:
+  - Leland Wilkinson, The Grammar of Graphic (2005)
+
+  [[./img/gog_cover.jpg]]
+
+
+R ggplot2 - is a implementation of ideas from this book.
+
+* Ggplot2 API
+
+  [[./img/ggplot2-api.png]]
+
+* Vega and Vega lite
+
+Vega is a declarative format for creating, saving, and sharing visualization designs. With Vega, visualizations are described in JSON, and generate interactive views using either HTML5 Canvas or SVG.
+
+Vega-Lite is a high-level visualization grammar. It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis. Vega-Lite support interactive multi-view graphics. Specifications can be compiled to Vega.
+
+* Vega and Vega lite Specs
+
+Pros:
+- based on Grammar of Graphics ideas
+- declarative
+- cover interactivity
+
+Cons:
+- highly coupled JS semantic
+- allow conflicted declarations
+- doesn't has enough types
+- Vega too low level
+- Vega-lite still doesn't looks like clear and high level API (at least too many ways do a single thing)
+
+Vega-lite seems OK as initial rendering backend
+
+* What do we need to model a plot?
+
+  [[./img/make-a-pie.png]]
+
+* Pipeline
+
+The Grammar of Graphics defined it's like:
+
+[[./img/data2graphics.jpg]]
+
+* More concrete example - 1
+
+[[./img/pipeline-idea.png]]
+
+* More concrete example - 2
+
+[[./img/scalaz-viz_render.jpg]]
+
+* How it can be defined in terms of CT
+
+1) Data (D)
+   - The data to plot has a schema, which is a small category that we'll call D.
+   - The actual data are sets of values that are connected by binary relations (potentially functions).
+     Those values and relations come about because they are the image of some functor D -> Set, that turns each schema object into a set of values, and each schema morphism into a relation (potentially a function) over two sets of values.
+2) A chart or visualization (V)
+   - Let's call this category V.
+   - objects in this category are the visual attributes of the chart
+   - morphisms might be the geometric or perceptual relationships between those attributes
+   - There is some functor V -> Picture, that transforms a categorical representation of a chart into a picture.
+
+* CT - user's job is to transform their data into a picture
+
+This happens in steps:
+
+  - The end user defines and applies zero or more endofunctors that compose to transform data (category D) into different data (let's call it D').
+  - The end user defines a functor D' -> V, which creates a D'-shapes figure in the category V.
+  - The end user can then tweak the visual attributes of the resulting picture by applying zero or more endofunctors that compose to transform a chart's visual attributes (category V) into different visual attributes (let's call it V').
+  - Out the other end pops a picture of V' whose preimage can be traced all the way back to the original data D.
+
+* CT model
+
+ <IMAGE OF CT MODEL>
+
+* Our initial approach - Vega-lite as low level schema - 1.
+
+  Lets model Vega-Lite specification as Schema with Shapeless
+
+* Our initial approach - Vega-lite as low level schema - 1.1
+
+#+begin_src scala :tangle no
+package scalaz.viz.schema
+
+import scalaz.viz.schema.Algebra.Schema
+
+trait GenDsl[A, B] {
+  def apply[F[_, _]](schema: Schema[F]): F[A, B]
+}
+#+end_src
+
+ ---
+
+#+begin_src scala :tangle no
+package scalaz.viz.vegalite.grammar
+
+import scalaz.viz.schema._
+import shapeless._
+
+case class Facet(
+  column: Option[PositionFieldDef],
+  row: Option[PositionFieldDef]
+)
+
+object Facet {
+  def schema: Dsl[Facet] = allOf(
+    opt("column" -> PositionFieldDef.schema) ::
+    opt("row" -> PositionFieldDef.schema) ::
+    HNil
+  ).to[Facet]
+}
+#+end_src
+
+* Our initial approach - Vega-lite as low level schema - 1.2
+
+#+begin_src scala :tangle no
+private[this] def printHelper[X, Y](dsl: GenDsl[X, Y]): Iterator[String] =
+  dsl.apply(new Schema[Printer] {
+    override def vString: Printer[String, String]    = Iterator("a string")
+    override def vNumber: Printer[Double, Double]    = Iterator("a number")
+    override def vBoolean: Printer[Boolean, Boolean] = Iterator("a boolean")
+    override def vJson: Printer[Boolean, Boolean]    = Iterator("a JSON object")
+
+    // ...
+
+    override def vOpt[A, B](dsl: GenDsl[A, B]): Printer[A, Option[B]] = {
+      val substrings = printHelper(dsl).map(line => "  " + line)
+      Iterator("An optional value:") ++ substrings
+    }
+
+    override def vOpt[A, B](dsl: GenDsl[A, B], defaultValue: B): Printer[A, B] = {
+      val substrings = printHelper(dsl).map(line => "  " + line)
+      Iterator(s"An optional value with default $defaultValue:") ++ substrings
+    }
+
+    // ...
+
+ }
+#+end_src
+
+* Draft of High-Level API (if we will get at that time)
+
+may be discuss here: FreeAp with Free vs TF
+
+* Road-map
+* If you wish to contribute, what you need to do
+* See other scalaz-<*> projects
