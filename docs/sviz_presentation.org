@@ -1,18 +1,36 @@
 #+CATEGORY: scalaz
 
-#+HTML_HEAD_EXTRA: <style></style>
-#+PANDOC_OPTIONS: standalone:t latex-engine:xelatex
+#+TITLE: Scalaz-Viz Pitch
+#+AUTHOR: Evgeniy
+#+EMAIL:
+#+DATE: 2018
+#+LANGUAGE:  en
+
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [10pt, presentation,  colorlinks, urlcolor=blue]
+#+OPTIONS: toc:nil H:1 num:t
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+#+BEAMER_THEME: metropolis[titleformat=smallcaps, sectionpage=simple,numbering=counter, progressbar=frametitle]
+#+LATEX_COMPILER: xelatex
+
+#+PANDOC_OPTIONS: standalone:t
+#+PANDOC_OPTIONS: pdf-engine:xelatex
 #+PANDOC_OPTIONS: "variable:mainfont=Helvetica Neue"
-#+OPTIONS: num:nil
-# right PDF export command
+
+# PDF export command
 # pandoc --latex-engine=xelatex --variable mainfont="Helvetica Neue" --variable geometry="margin=0.5in" --variable urlcolor=blue --toc sviz_presentation.org -f org -s -o sviz_presentation.pdf
 
-#+TITLE: Scalaz-Viz Pitch
+# Presentation mode via Epresent
 #+EPRESENT_FRAME_LEVEL: 1
 
-* Ambitious goal
 
-Scalaz-Viz a is Visualization library that:
+* Ambitious goal
+:PROPERTIES:
+:BEAMER_OPT: standout
+:END:
+
+*Scalaz-Viz* a is Visualization library that:
   - a high-performance
   - purely-functional
   - strongly-typed
@@ -42,21 +60,43 @@ Currently, the visualization landscape in Scala is a bit unremarkable:
   + Wrappers for JavaScript libs such as D3 in the Scala.js world (which is a fairly small subset of visualization    requirements - especially when we consider data science)
 
 * Visualization libraries at Scala.
+:PROPERTIES:
+:BEAMER_OPT: shrink=38
+:END:
 
-| Library   | multiple | typesafe | clear API            | streams | stack     | interactivity | docs              |
-|           | backends |          |                      |         | overflows |               |                   |
-|-----------+----------+----------+----------------------+---------+-----------+---------------+-------------------|
-| Doodle    | yes      | yes      | no (Free monads)     | no      | no        | no            | partial (at book) |
-| Nspl      | yes      | partial? | no (Factory methods) | yes     | ?         | partial       | no                |
-| EvilPlot  | partial  | partial  | yes                  | no?     | ?         | no            | yes               |
-| Vegas     | no       | partial  | no                   | no      | ?         | partial       | partial           |
-| Plot.ly   |          |          |                      |         |           |               |                   |
-| Wisp      |          |          |                      |         |           |               |                   |
-| BreezeViz | no       |          |                      |         |           |               |                   |
-| Smile     |          |          |                      |         |           |               |                   |
+#+beamer: \textbf {
+#+attr_latex: :align |c|c|c|c|c|c|c|c|
+|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
+| *Library* | *multiple* | *typesafe* | *clear API*          | *streams* | *stack*     | *interactivity* | *docs*            |
+|           | *backends* |            |                      |           | *overflows* |                 |                   |
+|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
+| Doodle    | yes        | yes        | no (Free monads)     | no        | no          | no              | partial (at book) |
+|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
+| Nspl      | yes        | partial?   | no (Factory methods) | yes       | ?           | partial         | no                |
+|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
+| EvilPlot  | partial    | partial    | yes                  | no?       | ?           | no              | yes               |
+|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
+| Vegas     | no         | partial    | no                   | no        | ?           | partial         | partial           |
+|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
+| Plot.ly   |            |            |                      |           |             |                 |                   |
+|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
+| Wisp      |            |            |                      |           |             |                 |                   |
+|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
+| BreezeViz | no         |            |                      |           |             |                 |                   |
+|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
+| Smile     |            |            |                      |           |             |                 |                   |
+|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
+#+beamer: }
+
 
 * Visualization libraries at others languages.
+:PROPERTIES:
+:BEAMER_OPT: shrink=13
+:END:
 
+#+beamer: \textbf {
+#+attr_latex: :align |c|c|c|c|c|
+ |------------+---------------------------+---+---+---|
  | Language   | Library                   |   |   |   |
  |------------+---------------------------+---+---+---|
  | R          | ggplot2                   |   |   |   |
@@ -73,6 +113,8 @@ Currently, the visualization landscape in Scala is a bit unremarkable:
  | Python     | pandas                    |   |   |   |
  | Python     | ggplot                    |   |   |   |
  | MATLAB     | MATLAB's plotting library |   |   |   |
+ |------------+---------------------------+---+---+---|
+#+beamer: }
 
 * Main Challenges.
 
@@ -95,14 +137,16 @@ Currently, the visualization landscape in Scala is a bit unremarkable:
 Fundamental theoretic work:
   - Leland Wilkinson, The Grammar of Graphic (2005)
 
-  [[./img/gog_cover.jpg]]
+#+ATTR_LATEX: :height 4cm
+[[./img/gog_cover.jpg]]
 
 
 R ggplot2 - is a implementation of ideas from this book.
 
 * Ggplot2 API
 
-  [[./img/ggplot2-api.png]]
+#+ATTR_LATEX: :height 8cm
+[[./img/ggplot2-api.png]]
 
 * Vega and Vega lite
 
@@ -142,6 +186,7 @@ The Grammar of Graphics defined it's like:
 
 * More concrete example - 2
 
+#+ATTR_LATEX: :height 8cm
 [[./img/scalaz-viz_render.jpg]]
 
 * How it can be defined in terms of CT
@@ -174,6 +219,9 @@ This happens in steps:
   Lets model Vega-Lite specification as Schema with Shapeless
 
 * Our initial approach - Vega-lite as low level schema - 1.1
+:PROPERTIES:
+:BEAMER_OPT: shrink=13
+:END:
 
 #+begin_src scala :tangle no
 package scalaz.viz.schema
@@ -184,6 +232,7 @@ trait GenDsl[A, B] {
   def apply[F[_, _]](schema: Schema[F]): F[A, B]
 }
 #+end_src
+
 
  ---
 
@@ -208,6 +257,9 @@ object Facet {
 #+end_src
 
 * Our initial approach - Vega-lite as low level schema - 1.2
+:PROPERTIES:
+:BEAMER_OPT: shrink=13
+:END:
 
 #+begin_src scala :tangle no
 private[this] def printHelper[X, Y](dsl: GenDsl[X, Y]): Iterator[String] =
@@ -241,3 +293,8 @@ may be discuss here: FreeAp with Free vs TF
 * Road-map
 * If you wish to contribute, what you need to do
 * See other scalaz-<*> projects
+* Thanks
+:PROPERTIES:
+:BEAMER_OPT: label=thanks,standout
+:END:
+Thanks for coming!
