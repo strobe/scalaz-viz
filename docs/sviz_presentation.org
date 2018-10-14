@@ -6,13 +6,16 @@
 #+DATE: 2018
 #+LANGUAGE:  en
 
-#+startup: beamer
 #+LaTeX_CLASS: beamer
 #+LATEX_CLASS_OPTIONS: [10pt, presentation,  colorlinks, urlcolor=blue]
 #+OPTIONS: toc:nil H:1 num:t
 #+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
-#+BEAMER_THEME: metropolis[titleformat=smallcaps, sectionpage=simple,numbering=counter, progressbar=frametitle]
+#+BEAMER_THEME: metropolis[titleformat=smallcaps, sectionpage=simple,numbering=counter, progressbar=foot]
 #+LATEX_COMPILER: xelatex
+#+LATEX: \setsansfont[BoldFont={Fira Sans SemiBold}]{Fira Sans Book}
+#+LATEX: \setmonofont[BoldFont={Fira Sans SemiBold}]{Fira Sans Book}
+
+#+startup: beamer
 
 #+PANDOC_OPTIONS: standalone:t
 #+PANDOC_OPTIONS: pdf-engine:xelatex
@@ -61,32 +64,37 @@ Currently, the visualization landscape in Scala is a bit unremarkable:
 
 * Visualization libraries at Scala.
 :PROPERTIES:
-:BEAMER_OPT: shrink=38
+:BEAMER_OPT: shrink=15
 :END:
 
-#+beamer: \textbf {
-#+attr_latex: :align |c|c|c|c|c|c|c|c|
-|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
-| *Library* | *multiple* | *typesafe* | *clear API*          | *streams* | *stack*     | *interactivity* | *docs*            |
-|           | *backends* |            |                      |           | *overflows* |                 |                   |
-|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
-| Doodle    | yes        | yes        | no (Free monads)     | no        | no          | no              | partial (at book) |
-|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
-| Nspl      | yes        | partial?   | no (Factory methods) | yes       | ?           | partial         | no                |
-|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
-| EvilPlot  | partial    | partial    | yes                  | no?       | ?           | no              | yes               |
-|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
-| Vegas     | no         | partial    | no                   | no        | ?           | partial         | partial           |
-|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
-| Plot.ly   |            |            |                      |           |             |                 |                   |
-|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
-| Wisp      |            |            |                      |           |             |                 |                   |
-|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
-| BreezeViz | no         |            |                      |           |             |                 |                   |
-|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
-| Smile     |            |            |                      |           |             |                 |                   |
-|-----------+------------+------------+----------------------+-----------+-------------+-----------------+-------------------|
-#+beamer: }
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX: \definecolor{coolGreen}{HTML}{096c31}
+#+LATEX: \renewcommand*\clm[1]{\textcolor{coolGreen}{\rotatebox{90}{\textbf{\Large #1}}}}
+#+LATEX: \renewcommand*\row[1]{\textbf{\large #1}}
+#+LATEX: \def\arraystretch{1.5}
+#+LABEL: table*
+#+ATTR_LATEX: :align |c|c|c|c|c|c|c|c| :font \large :width \columnwidth
+|-----------------+----------------+----------------+----------------------+---------------+--------------------+---------------------+-------------------|
+|                 |                |                |                      |               |                    |                     |                   |
+| \clm{Library}   | \clm{Backends} | \clm{Typesafe} | \clm{Clear API}      | \clm{Streams} | \clm{S. overflows} | \clm{Interactivity} | \clm{Docs}        |
+|-----------------+----------------+----------------+----------------------+---------------+--------------------+---------------------+-------------------|
+| \row{Doodle}    | yes            | yes            | no (Free monads)     | no            | no                 | no                  | partial (at book) |
+|-----------------+----------------+----------------+----------------------+---------------+--------------------+---------------------+-------------------|
+| \row{Nspl}      | yes            | partial?       | no (Factory methods) | yes           | ?                  | partial             | no                |
+|-----------------+----------------+----------------+----------------------+---------------+--------------------+---------------------+-------------------|
+| \row{EvilPlot}  | partial        | partial        | yes                  | no?           | ?                  | no                  | yes               |
+|-----------------+----------------+----------------+----------------------+---------------+--------------------+---------------------+-------------------|
+| \row{Vegas}     | no             | partial        | no                   | no            | ?                  | partial             | partial           |
+|-----------------+----------------+----------------+----------------------+---------------+--------------------+---------------------+-------------------|
+| \row{Plot.ly}   |                |                |                      |               |                    |                     |                   |
+|-----------------+----------------+----------------+----------------------+---------------+--------------------+---------------------+-------------------|
+| \row{Wisp}      |                |                |                      |               |                    |                     |                   |
+|-----------------+----------------+----------------+----------------------+---------------+--------------------+---------------------+-------------------|
+| \row{BreezeViz} | no             |                |                      |               |                    |                     |                   |
+|-----------------+----------------+----------------+----------------------+---------------+--------------------+---------------------+-------------------|
+| \row{Smile}     |                |                |                      |               |                    |                     |                   |
+|-----------------+----------------+----------------+----------------------+---------------+--------------------+---------------------+-------------------|
+
 
 
 * Visualization libraries at others languages.
