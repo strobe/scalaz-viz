@@ -18,7 +18,9 @@ object Scalaz {
     "-language:existentials",
     "-unchecked",
     "-Yno-adapted-args",
-    "-Xlint:_,-type-parameter-shadow",
+    "-language:implicitConversions",
+    "-language:postfixOps",
+    //"-Xlint:_,-type-parameter-shadow",
     "-Xsource:2.13",
     "-Ywarn-dead-code",
     "-Ywarn-inaccessible",
@@ -36,22 +38,22 @@ object Scalaz {
         Seq(
           "-opt-warnings",
           "-Ywarn-extra-implicit",
-          "-Ywarn-unused:_,imports",
-          "-Ywarn-unused:imports",
+          //"-Ywarn-unused:_,imports",
+          //"-Ywarn-unused:imports",
           "-opt:l:inline",
           "-opt-inline-from:<source>"
         )
       case _ =>
         Seq(
-          "-Xexperimental",
-          "-Ywarn-unused-import"
+          "-Xexperimental"//,
+          //"-Ywarn-unused-import"
         )
     }
 
   def stdSettings(prjName: String) = Seq(
     name := s"scalaz-$prjName",
     scalacOptions := stdOptions,
-    crossScalaVersions := Seq("2.12.6", "2.11.12"),
+    crossScalaVersions := Seq("2.12.7", "2.11.12"),
     scalaVersion in ThisBuild := crossScalaVersions.value.head,
     scalacOptions := stdOptions ++ extraOptions(scalaVersion.value),
     libraryDependencies ++= compileOnlyDeps ++ testDeps ++ Seq(
@@ -59,6 +61,15 @@ object Scalaz {
       "io.argonaut" %% "argonaut" % "6.2.2",
       "io.argonaut" %% "argonaut-scalaz" % "6.2.2",
       "com.chuusai" %% "shapeless" % "2.3.3",
+      "com.github.julien-truffaut" %%  "monocle-core"  % "1.5.0",
+      "com.github.julien-truffaut" %%  "monocle-macro" % "1.5.0",
+      "com.github.julien-truffaut" %%  "monocle-law"   % "1.5.0" % "test",
+      "com.github.kenbot" %%  "goggles-dsl"     % "1.0",
+      "com.github.kenbot" %%  "goggles-macros"  % "1.0",
+      "org.scalaz" %% "testz-core" % "0.0.5",
+      "org.scalaz" %% "testz-stdlib" % "0.0.5",
+      "org.scalaz" %% "testz-runner" % "0.0.5",
+      "org.scalaz" %% "testz-scalaz" % "0.0.5",
       compilerPlugin("org.spire-math"         %% "kind-projector"  % "0.9.7"),
       compilerPlugin("com.github.tomasmikula" %% "pascal"          % "0.2.1"),
       compilerPlugin("com.github.ghik"        %% "silencer-plugin" % "1.0")
