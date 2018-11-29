@@ -20,10 +20,6 @@ import scala.math._
 import InterpreterHelpers._
 
 
-// TODO: MeanFn and ReverseFn should be polymorphic
-// - seems like Data should has something like :Foldable
-// TODO: layerBuilder
-// TODO: Chart ~> Image
 object Main extends App {
 
   case class ColumnId(idx: Int)
@@ -144,15 +140,6 @@ object Main extends App {
 
     val defaultAes = Aes2D(defaultAxisStyle, defaultGridStyle, defaultPointStyle)
 
-    // lens for Point mark
-    // val xLens: Lens[Point, Double] =
-      // Lens[Point, Double](_.x)(v => a => a.copy(x = v))
-    // val yLens: Lens[Point, Double] =
-      // Lens[Point, Double](_.x)(v => a => a.copy(x = v))
-    // val styleLens: Lens[Point, PointStyle] = Lens[Point, PointStyle](_.style)(v => a => a.copy(style = v))
-    // val radiusLens: Lens[PointStyle, Double] =
-      // Lens[PointStyle, Double](_.radius)(v => a => a.copy(radius = v))
-    // val sizeLens = styleLens composeLens radiusLens
   }
 
   object algebra {
@@ -363,27 +350,6 @@ object Main extends App {
       }
     }
 
-    /**
-      apply X for Data.x and Data.y return Data
-
-      def mean(s: Source, ids: Seq[ColumnId]) = {
-        def transf = ???
-        s.map(v =>
-          RawData.unapply(v).map(x =>
-            val tuple = x
-            for(a <- 0 to ids.size) {
-              // def get = tuple._<a>
-              // tuple._<a> = transf(get)
-              //
-            }
-            tuple
-          )
-        )
-      }
-
-      */
-
-
     def toMarksEvaluator[A](): MarksF ~> Evaluator = new (MarksF ~> Evaluator) {
       def apply[A](fa: MarksF[A]) = fa match {
         case SetMapping(m, p, cId) => MarkDataRel(m, p, cId)
@@ -417,7 +383,6 @@ object Main extends App {
       D: MarksLifted[ChartF],
       E: CoordinatesLifted[ChartF]
       ) = {
-      // ): FreeAp[ChartF, Source] = {
 
       import vis._
       import aesDefaults._
@@ -477,8 +442,6 @@ object Main extends App {
       // combing layers to chart
       val chart = (layer1 |@| layer2)((x,y) => (x,y))
 
-      // val chart = (layerOneB |@| layerTwoB)(renderToFile("the-chart.png"))
-
       chart
     }
 
@@ -490,5 +453,3 @@ object Main extends App {
 
   example.run
 }
-
-//  LocalWords:  SourceFn LocalWords coproducts MarkProps mappable
